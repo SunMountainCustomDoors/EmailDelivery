@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Net.Mail;
+using System.Net;
 
 namespace DrawingDelivery
 {
@@ -58,7 +59,7 @@ namespace DrawingDelivery
             {
                 //Get Message Values
                 string Label = r["Label"].ToString();
-                string server = "192.168.1.40";
+                string server = "mail.smtp2go.com";
                 string to = r["To"].ToString();
                 string from = "cpq@sunmountaindoor.com";
 
@@ -83,6 +84,9 @@ namespace DrawingDelivery
                 message.Body = body;
                 //message.Attachments.Add(a);
                 SmtpClient client = new SmtpClient(server);
+                //Plaintext credentials, switch to environment variables or a settings file as soon as feasible
+                var basicCredential = new NetworkCredential("SMD_smtp", "YupQ4SkmjKFLaiAC");
+                client.Credentials = basicCredential;
                 //client.UseDefaultCredentials = true;
                 client.Send(message);
                 message.Dispose();
@@ -93,7 +97,7 @@ namespace DrawingDelivery
         //Sent Email on Startup
         static void SendStartEmail()
         {
-            string server = "192.168.1.40";
+            string server = "mail.smtp2go.com";
             string to = "jantonacci@sunmountaindoor.com";
             string from = "cpq@sunmountaindoor.com";
 
@@ -109,6 +113,9 @@ namespace DrawingDelivery
             message.Subject = subject;
             message.Body = body;
             SmtpClient client = new SmtpClient(server);
+            //Plaintext credentials, switch to environment variables or a settings file as soon as feasible
+            var basicCredential = new NetworkCredential("SMD_smtp", "YupQ4SkmjKFLaiAC");
+            client.Credentials = basicCredential;
             client.Send(message);
             message.Dispose();
         }
